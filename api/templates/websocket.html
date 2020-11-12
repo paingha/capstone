@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSU IRB</title>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+    <h3>WebSocket Go</h3>
+    <input type="text" name="message" id="message">
+    <input type="button" value="submit" onclick="send()">
+    <pre id="output"></pre>
+
+    <script>
+      url = 'ws://localhost:3008/ws/inbox/1234';
+      c = new WebSocket(url);
+      var message = document.getElementById("message")
+      send = function(data){
+        $("#output").append("Jane: " + message.value)
+        c.send(message.value)
+      }
+
+      c.onmessage = function(msg){
+        $("#output").append("Joe: " + msg.data)
+        console.log(msg)
+      }
+      /*
+      c.onopen = function(){
+        setInterval( 
+          function(){ send("ping") }
+        , 1000000 )
+      }*/
+    </script>
+
+  </body>
+</html>

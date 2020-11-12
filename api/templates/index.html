@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSU IRB</title>
+    <link rel="stylesheet" href="/public/main.css">
+    <style>
+        *{
+            font-family: 'Open Sans', sans-serif;
+        }
+        html, body{
+            margin: 0;
+            padding: 0;
+        }
+        body {
+          background-color: #282c34;
+          min-height: 100vh;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: white;
+        }
+        .main-wrapper{
+          display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+          display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+          display: -ms-flexbox;      /* TWEENER - IE 10 */
+          display: -webkit-flex;     /* NEW - Chrome */
+          display:flex;
+          width: 100%;
+          min-height: 100vh;
+          height: auto;
+          flex-direction: column;
+          align-content: center;
+          align-items: center;
+          justify-content: center;
+          margin: 0;
+          font-family: 'Open Sans', sans-serif;
+        }
+        .login-wrapper{
+            width: 100%;
+            min-height: 100vh;
+            height: auto;
+            background-color: #008265;
+            display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+            display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+            display: -ms-flexbox;      /* TWEENER - IE 10 */
+            display: -webkit-flex;     /* NEW - Chrome */
+            display:flex;
+            flex-direction: column;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .login-header{
+          font-size: 28px;
+          color: #757575;
+          margin-bottom: 1.5em;
+          text-align: center;
+        }
+        .bottom-link-wrapper{
+          margin-top: 12px;
+          width: 100%;
+          display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+          display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+          display: -ms-flexbox;      /* TWEENER - IE 10 */
+          display: -webkit-flex;     /* NEW - Chrome */
+          display:flex;
+          flex-direction: row;
+          align-content: space-around;
+          align-items: center;
+          justify-content: space-around;
+          color: #757575;
+          flex-wrap: wrap;
+        }
+        .bottom-link{
+          color: #757575;
+        }
+        .bottom-institution-info{
+          margin-top: 10px;
+          color: #FFFFFF;
+          margin-bottom: 15px;
+        }
+        .bottom-institution-link{
+          color: #FFFFFF;
+        }
+        .bottom-institution-info p{
+          margin: 5px;
+        }
+        .login-sub-wrapper{
+          width: 30%;
+          min-height: 45vh;
+          padding-bottom: 0.6em;
+          height: auto;
+          background-color: #ffffff;
+          display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+          display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+          display: -ms-flexbox;      /* TWEENER - IE 10 */
+          display: -webkit-flex;     /* NEW - Chrome */
+          display:flex;
+          flex-direction: column;
+          align-content: center;
+          align-items: center;
+          justify-content: center;
+          border-radius: 8px;
+          box-shadow:0 4px 6px rgba(50,50,93,0.20),0 1px 3px rgba(0,0,0,0.10);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <svg id="logo" class="logo" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="400" height="400" viewBox="0 0 400 400">
+        <image id="Background" width="400" height="400" href="data:img/png;base64,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"/>
+        </svg>
+        <div class="login-sub-wrapper">
+        <p class="login-header">NSU IRB: <br /><strong>API Gateway</strong></p>
+        <div class="bottom-link-wrapper">
+            <a class="bottom-link" href="/register"><p>API Status Page</p></a>
+            <a class="bottom-link" href="/forgot-password"><p>API Documentation</p></a>
+        </div>
+        </div>
+        <div class="bottom-institution-info">
+        <p>Registered as Northeastern Ste U</p>
+        <p>Institution Number(IORG): IORG0003454</p>
+        <a class="bottom-institution-link" href="https://offices.nsuok.edu/Portals/59/2018-2023%20-%20FWA.pdf"><p>Federalwide Assurance(FWA): FWA00006753 (expires: 04/17/2023)</p></a>
+        <a class="bottom-institution-link" href="https://offices.nsuok.edu/Portals/59/documents/IRB%20Registration.pdf"><p>IRB Number: IRB00004117 (expires: 2/28/2022)</p></a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+## Copyright 2020 Paingha Joe Alagoa. All rights reserved.
+## Use of this source code is governed by a BSD-style
+## license that can be found in the LICENSE file.
+
+version: "3.7"
+services:
+
+  rabbit:
+    image: "rabbitmq:latest"
+    hostname: "rabbit"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "WouFRQQ1%MfMsJla4IBJic"
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    labels:
+      NAME: "rabbitmq"
+
+  postgres:
+    image: postgres:11-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  api:
+    image: api
+    build:
+      context: api
+      args:
+        service: api
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api/docs/openapi.yaml:/app/api/docs/openapi.yaml
+    environment:
+      SERVER_PORT: 8080
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_DATABASE: postgres
+      DB_SSL : disable
+      ENV_RABBITMQ_HOST : "amqp://rabbitmq:rabbitmq@rabbit/"
+      DATABASE_DEBUG_MODE: "true"
+      ENV_BASE_URL : "https://paingha.tech"
+    depends_on:
+      - postgres
+      - rabbit
+
+  mailer:
+    image: mailer
+    build:
+      context: api
+      args:
+        service: mailservice
+    restart: on-failure
+    environment:
+      ENV_RABBITMQ_HOST : "amqp://rabbitmq:rabbitmq@rabbit/"
+      ENV_SENDGRID_API_KEY : "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"
+      ENV_SENDER_EMAIL  : "info@paingha.tech"
+      ENV_BASE_URL : "https://paingha.tech"
+    depends_on:
+      - rabbit
+
+  sms:
+    image: sms
+    build:
+      context: api
+      args:
+        service: smsservice
+    restart: on-failure
+    environment:
+      ENV_RABBITMQ_HOST : "amqp://rabbitmq:rabbitmq@rabbit/"
+      ENV_SENDGRID_API_KEY : "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"
+      ENV_SENDER_EMAIL  : "info@paingha.tech"
+      ENV_BASE_URL : "https://paingha.tech"
+    depends_on:
+      - rabbit
+
+
+volumes:
+  db-volume:
+  redis-volume:

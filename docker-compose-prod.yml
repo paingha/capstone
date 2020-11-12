@@ -1,0 +1,97 @@
+## Copyright 2020 Paingha Joe Alagoa. All rights reserved.
+## Use of this source code is governed by a BSD-style
+## license that can be found in the LICENSE file.
+
+version: "3.7"
+services:
+
+  rabbit:
+    image: "rabbitmq:latest"
+    hostname: "rabbit"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: "%d&mlDXF16w0xCcHRqJ9u3*V%#"
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    labels:
+      NAME: "rabbitmq"
+
+  redis:
+    image: redis:5.0.9-alpine
+    volumes:
+      - redis-volume:/data
+
+  postgres:
+    image: postgres:11-alpine
+    environment:
+      PGUSER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+
+  api:
+    image: restapi
+    build:
+      context: restapi
+      args:
+        service: tenant-managment
+    restart: on-failure
+    volumes:
+      - ./api/docs/openapi.yaml:/app/docs/openapi.yaml
+    environment:
+      SERVER_PORT: 8080
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_DATABASE: postgres
+      DB_SSL : disable
+      ENV_RABBITMQ_HOST : "amqp://rabbitmq:rabbitmq@rabbit/"
+      DATABASE_DEBUG_MODE: "true"
+      ENV_BASE_URL : "https://joealagoa.dev"
+    depends_on:
+      - postgres
+      - rabbit
+
+  mailsender:
+    image: mailsender
+    build:
+      context: restapi
+      args:
+        service: mailservice
+    restart: on-failure
+    environment:
+      ENV_RABBITMQ_HOST : "amqp://rabbitmq:rabbitmq@rabbit/"
+      ENV_SENDGRID_API_KEY : ""
+      ENV_SENDER_EMAIL  : "info@irb.edu"
+      ENV_BASE_URL : "https://joealagoa.dev"
+    depends_on:
+      - rabbit
+  
+  sms:
+    image: sms
+    build:
+      context: restapi
+      args:
+        service: smsservice
+    restart: on-failure
+    environment:
+      ENV_RABBITMQ_HOST : "amqp://rabbitmq:rabbitmq@rabbit/"
+      ENV_TWILIO_ACCOUNT_SID : "AC31c081baf99da0cfe90b22efa35092a5"
+      ENV_TWILIO_AUTH_TOKEN : "18763b42ef34f119d4729235dac5ce6c"
+      ENV_SENDER_PHONE : "+14155238886"
+    depends_on:
+      - rabbit
+
+  webapp:
+    image: capstone/webapp
+    build: webapp
+    restart: on-failure
+    volumes:
+      - ./webapp:/usr/src/app
+    ports:
+      - "3000:3000"
+
+volumes:
+  db-volume:
+  redis-volume:

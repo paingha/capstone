@@ -1,0 +1,159 @@
+basePath: /v1
+definitions:
+  models.User:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      email:
+        type: string
+      email_verified:
+        type: boolean
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      phone_verified:
+        type: boolean
+      phoneNumber:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: apaingha@gmail.com
+    name: Paingha Joe Alagoa
+    url: http://www.swagger.io/support
+  description: This is an api server for Pace.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Pace API
+  version: "1.0"
+paths:
+  /user/{id}:
+    delete:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Deletes a user based on given ID
+      tags:
+      - User Auth
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieves user based on given ID
+      tags:
+      - User Auth
+    patch:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Updates user based on given ID
+      tags:
+      - User Auth
+  /user/list:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      security:
+      - ApiKeyAuth: []
+      summary: List all registered Users
+      tags:
+      - User Auth
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Login a user by sending jwt
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Logins a User
+      tags:
+      - User Auth
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new User account
+      parameters:
+      - description: Create User Account
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      security:
+      - ApiKeyAuth: []
+      summary: Registers a new User
+      tags:
+      - User Auth
+schemes:
+- http
+- https
+- ws
+swagger: "2.0"
