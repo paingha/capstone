@@ -6,13 +6,16 @@ package config
 
 import (
 	"flag"
+	"log"
 
 	env "github.com/Netflix/go-env"
 	"github.com/jinzhu/gorm"
 )
 
-//DB - Database connection
-var DB *gorm.DB
+var (
+	//DB - Database connection
+	DB *gorm.DB
+)
 
 // DBConfig represents db configuration
 type DBConfig struct {
@@ -61,6 +64,22 @@ func GetConnectionContext() string {
 		return DevDbURL(BuildProdDBConfig())
 	}
 	return ProdDbURL(BuildDevDBConfig())
+}
+
+//GetTestConnectionContext - returns database connection string for test to be run
+func GetTestConnectionContext() string {
+	return TestDbURL(BuildTestDBConfig())
+}
+
+func UseDBTestContext() error{
+	var err error
+	DB, err = gorm.Open("postgres", GetTestConnectionContext())
+	if err != nil{
+		log.Fatal(err)
+		return err
+	}
+	defer DB.Close()
+	return nil
 }
 
 //InitConfig - initial the configuration struct with environment variables

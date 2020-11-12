@@ -1,8 +1,8 @@
 # Project Entry for NSU IRB
 
 ![Twitter Follow](https://img.shields.io/twitter/follow/painghajnr?style=social)
-![GitHub repo size](https://img.shields.io/github/repo-size/paingha/auth-service?style=plastic)
-![Coveralls github](https://img.shields.io/coveralls/github/paingha/auth-service)
+![GitHub repo size](https://img.shields.io/github/repo-size/paingha/capstone?style=plastic)
+![Coveralls github](https://img.shields.io/coveralls/github/paingha/capstone)
 
 This is a project entry for the overhaul of the NSU IRB which currently handles communication and applications for research approval through email. This is also my potential capstone project. (Still trying to decide lol 😂).
 
@@ -59,8 +59,8 @@ This project is currently not accepting contributions.
 ## TODO
 The following are todo items for this project
 ##### - Dockerize API, Mail Queue Service, and SMS Queue Service. - DONE
-##### - Setup React Webapp using create-react-app.
-##### - Use email verification html files for verification emails.
+##### - Setup React Webapp using create-react-app. - DONE
+##### - Use email verification html files for verification emails. - DONE
 ##### - Add more tests
 ##### - Setup CI/CD pipeline with Circle CI
 
