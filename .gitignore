@@ -4,7 +4,7 @@ start_mail.cmd
 start_sms.cmd
 mailservice/main.exe
 smsservice/main.exe
-api/main.exe
+api/api.exe
 api/vendor
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
