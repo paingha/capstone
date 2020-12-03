@@ -6,6 +6,8 @@
 
 This is a project entry for the overhaul of the NSU IRB which currently handles communication and applications for research approval through email. This is also my potential capstone project. (Still trying to decide lol 😂).
 
+![](https://raw.githubusercontent.com/paingha/capstone/master/capstone-github-image.PNG?token=AB6SB22F5FXRNOWSR73EUGK72KRP2)
+
 ## Installation
 
 Initialize environment variables for API by creating a api.cmd or api.bash file like so:
