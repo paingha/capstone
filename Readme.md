@@ -4,7 +4,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/paingha/auth-service?style=plastic)
 ![Coveralls github](https://img.shields.io/coveralls/github/paingha/auth-service)
 
-This is a project entry for the overhaul of the NSU IRB which currently handles communication and applications for research approval through email. This is also my potential capstone project. (Still trying to decide lol 😂).
+This is a project entry for the overhaul of the NSU IRB which currently handles communication and applications for research approval through email. This is also my capstone project.
 
 ![](https://raw.githubusercontent.com/paingha/capstone/master/capstone-github-image.PNG?token=AB6SB22F5FXRNOWSR73EUGK72KRP2)
 
@@ -64,7 +64,7 @@ The following are todo items for this project
 ##### - Setup React Webapp using create-react-app.
 ##### - Use email verification html files for verification emails.
 ##### - Add more tests
-##### - Setup CI/CD pipeline with Circle CI
+##### - Setup Kubernetes and Docker Compose files
 
 ## License
 [MIT License](https://choosealicense.com/licenses/mit/)
