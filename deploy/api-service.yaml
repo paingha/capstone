@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    NAME: api
+    kompose.cmd: C:\Program Files\kompose\kompose.exe convert -f docker-compose-prod.yml
+      -o deploy
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: api
+  name: api
+spec:
+  type: LoadBalancer
+  ports:
+  - name: "80"
+    port: 80
+    targetPort: 8080
+  selector:
+    io.kompose.service: api
+status:
+  loadBalancer: {}

@@ -9,25 +9,18 @@ import (
 
 	"bitbucket.com/irb/api/plugins"
 	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/gofrs/uuid"
 )
 
 //Claims struct for Jwt
 type Claims struct {
-	ID      string `json:"id,omitmpty"`
-	UserID  int    `json:"user_id,omitmpty"`
-	IsAdmin bool   `json:"isAdmin,omitmpty"`
+	UserID  int  `json:"user_id,omitempty"`
+	IsAdmin bool `json:"isAdmin"`
 	jwt.StandardClaims
 }
 
 //CreateJWT - creates json web token for user login
 func CreateJWT(userID int, admin bool) (string, error) {
-	u2, err := uuid.NewV4()
-	if err != nil {
-		return "", err
-	}
 	claims := Claims{
-		ID:      u2.String(),
 		UserID:  userID,
 		IsAdmin: admin,
 	}

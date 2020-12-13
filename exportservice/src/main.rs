@@ -1,5 +1,3 @@
-// Port of https://www.rabbitmq.com/tutorials/tutorial-one-python.html. Run this
-// in one shell, and run the hello_world_publish example in another.
 use amiquip::{Connection, QueueDeclareOptions, ConsumerOptions, Result};
 use std::thread;
 use std::env;

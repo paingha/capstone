@@ -23,7 +23,8 @@ type QueueService struct {
 
 //NewQueueService - Declare a new Rabbitmq queue
 func NewQueueService(ctx context.Context, cfg *config.SystemConfig) (*QueueService, error) {
-	conn, err := amqp.Dial(cfg.AMQPConnectionURL)
+	connectionString := "amqp://" + cfg.AMQPConnectionURL + cfg.RabbitMQVhost
+	conn, err := amqp.Dial(connectionString)
 	if err != nil {
 		return nil, err
 	}

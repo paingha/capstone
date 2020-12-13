@@ -15,7 +15,9 @@ import (
 	"bitbucket.com/irb/api/config"
 	"bitbucket.com/irb/api/models"
 	"bitbucket.com/irb/api/plugins"
-	"github.com/sendgrid/sendgrid-go"
+
+	
+	sendgrid "github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 	"github.com/sirupsen/logrus"
 	"github.com/streadway/amqp"
@@ -42,7 +44,8 @@ func main() {
 	if err != nil {
 		handleError(err, "Can't load Env config")
 	}
-	conn, err := amqp.Dial(cfg.AMQPConnectionURL)
+	connectionString := "amqp://" + cfg.AMQPConnectionURL + ":5672" + cfg.RabbitMQVhost
+	conn, err := amqp.Dial(connectionString)
 	handleError(err, "Can't connect to AMQP")
 	defer conn.Close()
 	plugins.LogInfo("MailService: Sendgrid API Key", cfg.SendgridAPIKey)

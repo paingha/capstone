@@ -11,6 +11,7 @@ import (
 
 	"bitbucket.com/irb/api/config"
 	"bitbucket.com/irb/api/models"
+	"bitbucket.com/irb/api/plugins"
 	"github.com/sfreiberg/gotwilio"
 	"github.com/sirupsen/logrus"
 	"github.com/streadway/amqp"
@@ -34,9 +35,10 @@ func main() {
 	logrus.Info("Starting service ... ")
 	err := config.InitConfig(&cfg)
 	if err != nil {
-		logrus.Fatalf("load config %v", err)
+		plugins.LogFatal("SMSService", "error loading system config", err)
 	}
-	conn, err := amqp.Dial(cfg.AMQPConnectionURL)
+	connectionString := "amqp://" + cfg.AMQPConnectionURL + ":5672" + cfg.RabbitMQVhost
+	conn, err := amqp.Dial(connectionString)
 	handleError(err, "Can't connect to AMQP")
 	defer conn.Close()
 	logrus.Infof("%v", cfg)

@@ -42,8 +42,12 @@ func TestLoginUser(t *testing.T){
 	if err := config.UseDBTestContext(); err != nil{
 		log.Fatal(err)
 	}
-	var user models.User
 	//Add mock user data here
+	gofakeit.Seed(0)
+	user := models.User{
+		Email: gofakeit.Email(),
+		Password: gofakeit.Password(true, true, true, true, true, 6),
+	}
 	user, token, err := models.LoginUser(&user)
 	if err != nil {
 		log.Print(err)
