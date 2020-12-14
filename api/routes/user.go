@@ -22,6 +22,7 @@ func UserRouter(r *gin.Engine) *gin.Engine {
 		v1.GET("/", middlewares.AuthenticationMiddleware(), middlewares.AdminMiddleware(), controllers.UserControllers["getUsers"])
 		v1.POST("/register", controllers.UserControllers["createUser"])
 		v1.POST("/login", controllers.UserControllers["loginUser"])
+		v1.POST("/forgot", controllers.UserControllers["forgotUser"])
 		v1.GET("/:id/verify-email", controllers.UserControllers["verifyEmailUser"])
 	}
 	return r

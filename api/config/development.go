@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	"bitbucket.com/irb/api/plugins"
+	"bitbucket.com/irb/api/utils"
 )
 
 //BuildDevDBConfig - Builds DB Config for dev environment
@@ -17,9 +18,10 @@ func BuildDevDBConfig() *DBConfig {
 	if err != nil {
 		plugins.LogFatal("API", "Wrong Dev System config", err)
 	}
+	port, _ := utils.ConvertStringToInt(cfg.DevDBPort)
 	dbConfig := DBConfig{
 		Host:     cfg.DevDBHost,
-		Port:     5432,
+		Port:     port,
 		User:     cfg.DevDBUser,
 		DBName:   cfg.DevDBDatabase,
 		Password: cfg.DevDBPass,

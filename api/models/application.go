@@ -160,7 +160,7 @@ func CreateApplication(application *Application) (bool, error) {
 	if errs := config.DB.Create(application).Error; errs != nil {
 		return false, errs
 	}
-	return false, nil
+	return true, nil
 }
 
 //GetApplication - fetch one application

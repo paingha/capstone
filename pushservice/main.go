@@ -13,7 +13,7 @@ import (
 	"bitbucket.com/irb/api/models"
 	"github.com/sirupsen/logrus"
 	"github.com/streadway/amqp"
-	"github.com/tbalthazar/onesignal-go"
+	onesignal "github.com/tbalthazar/onesignal-go"
 )
 
 var (
@@ -36,7 +36,8 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("load config %v", err)
 	}
-	conn, err := amqp.Dial(cfg.AMQPConnectionURL)
+	connectionString := "amqp://" + cfg.AMQPConnectionURL + ":5672" + cfg.RabbitMQVhost
+	conn, err := amqp.Dial(connectionString)
 	handleError(err, "Can't connect to AMQP")
 	defer conn.Close()
 	logrus.Infof("%v", cfg)

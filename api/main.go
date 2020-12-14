@@ -14,6 +14,8 @@ import (
 	"bitbucket.com/irb/api/service"
 	"bitbucket.com/irb/api/stuff"
 	"github.com/jinzhu/gorm"
+
+	//"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
@@ -38,6 +40,10 @@ var err error
 
 func main() {
 	//system config
+	/*if err := godotenv.Load(".env"); err != nil {
+		plugins.LogFatal("API", "Error loading .env file", err)
+	}*/
+
 	systemCfg := &config.SystemConfig{}
 	if err := config.InitConfig(systemCfg); err != nil {
 		plugins.LogFatal("API", "Wrong rabbitMQ config", err)
@@ -53,7 +59,7 @@ func main() {
 	config.DB.AutoMigrate(&models.Conversation{})
 	config.DB.AutoMigrate(&models.Message{})
 	config.DB.AutoMigrate(&models.Application{})
-	localServer := ":8089"
+	localServer := ":8080"
 	mailService, err := service.NewQueueService(context.Background(), systemCfg)
 	if err != nil {
 		plugins.LogError("API", "error initializing mail service", err)
@@ -74,10 +80,8 @@ func main() {
 		plugins.LogError("API", "error initializing upload service", err)
 	}
 	stuff.UploadService = uploadService
-	inboxHub := plugins.NewHub()
-	go inboxHub.Run()
 	//setup routes
-	r := routes.SetupRouter(inboxHub)
+	r := routes.SetupRouter()
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 	// running

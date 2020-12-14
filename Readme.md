@@ -8,52 +8,13 @@ This is a project entry for the overhaul of the NSU IRB which currently handles 
 
 ![](https://raw.githubusercontent.com/paingha/capstone/master/capstone-github-image.PNG?token=AB6SB22F5FXRNOWSR73EUGK72KRP2)
 
+
 ## Installation
 
-Initialize environment variables for API by creating a api.cmd or api.bash file like so:
-
-```bash
-set DB_HOST=localhost
-set DB_PORT=5432
-set DB_USER=postgres
-set DB_PASS=123456
-set DB_DATABASE=databasename
-set DB_SSL=disable
-set ENV_RABBITMQ_HOST=amqp://localhost/
-set ENV_SENDGRID_API_KEY=SendgridApiKeyGoesHere
-set ENV_SENDER_EMAIL=mail@senderemail.com
-set ENV_BASE_URL=http://localhost:8080/v1
-go mod vendor
-go build -o ./api/main.exe ./api
-cd api
-main.exe
-
-pause
-```
-
-Initialize environment variables for Mailer Service by creating a mail.cmd or mail.bash file like so:
-
-```bash
-set ENV_RABBITMQ_HOST=amqp://localhost/
-set ENV_SENDGRID_API_KEY=SendgridApiKeyGoesHere
-set ENV_SENDER_EMAIL=mail@senderemail.com
-set ENV_BASE_URL=http://localhost:8080/v1
-go mod vendor
-go build -o ./mailservice/main.exe  ./mailservice
-cd mailservice
-main.exe
-
-pause
-```
-
-## Usage
-
-### Steps:
-#### Step 1: Click the mail.cmd file to start the mailer queue service.(Make sure your [RabbitMQ server](https://www.rabbitmq.com) is running)
-#### Step 2: Click the api.cmd file to start the API service. (The mail queue service has to be running for the API to work)
-#### Swagger UI is available at [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
-#### API is available at [http://localhost:8080/v1](http://localhost:8080/v1)
-
+- Clone Github Repo into your Go Workspace: git clone https://github.com/paingha/capstone.git
+- Create .env file by renaming example.env file and filling in environment variables.
+- Run docker-compose up -d
+- Swagger UI is available at [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html) and API is available at [http://localhost:8080/v1](http://localhost:8080/v1)
 
 ## Contributing
 This project is currently not accepting contributions.
@@ -61,13 +22,13 @@ This project is currently not accepting contributions.
 ## TODO
 The following are todo items for this project
 ##### - Dockerize API, Mail Queue Service, and SMS Queue Service. - DONE
-##### - Setup React Webapp using create-react-app.
-##### - Use email verification html files for verification emails.
+##### - Setup React Webapp using create-react-app. - DONE
+##### - Use email verification html files for verification emails. - DONE
 ##### - Add more tests
 ##### - Setup Kubernetes and Docker Compose files
 
 ## License
-[MIT License](https://choosealicense.com/licenses/mit/)
+[BSD License](https://opensource.org/licenses/BSD-3-Clause)
 
 ## Authors
 ##### - Paingha Joe Alagoa - [🌍 Website](http://paingha.me), [🐦 Twitter](https://twitter.com/painghajnr), [💼 Github](https://github.com/paingha)

@@ -14,7 +14,7 @@ import (
 	"bitbucket.com/irb/api/security"
 	"bitbucket.com/irb/api/stuff"
 
-	"github.com/dgrijalva/jwt-go"
+	jwt "github.com/dgrijalva/jwt-go"
 	//Needed for postgres
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -66,7 +66,7 @@ func CreateUser(user *User) (bool, error) {
 			emailBody["first_name"] = user.FirstName
 			emailBody["last_name"] = user.LastName
 			emailBody["link"] = fmt.Sprintf("%s/user/0/verify-email?token=%s", baseURL, base64.StdEncoding.EncodeToString([]byte(user.VerifyCode)))
-			emailInfo := EmailParam{
+			/*emailInfo := EmailParam{
 				To:        user.Email,
 				Subject:   "Verify your email",
 				BodyParam: emailBody,
@@ -75,7 +75,7 @@ func CreateUser(user *User) (bool, error) {
 			err := stuff.MailService.Send("email", emailInfo)
 			if err != nil {
 				fmt.Println(err)
-			}
+			}*/
 			return true, nil
 		}
 		return false, err
@@ -96,9 +96,12 @@ func LoginUser(user *User) (User, string, error) {
 	if !resp {
 		return User{}, "", nil
 	}
+	fmt.Println("--------------------------------------")
+	fmt.Println(dbUser.IsAdmin)
+	fmt.Println("--------------------------------------")
 	claims := &security.Claims{
-		UserID:  user.ID,
-		IsAdmin: user.IsAdmin,
+		UserID:  dbUser.ID,
+		IsAdmin: dbUser.IsAdmin,
 		StandardClaims: jwt.StandardClaims{
 			// In JWT, the expiry time is expressed as unix milliseconds
 			ExpiresAt: expiresAt.Unix(),

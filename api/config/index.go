@@ -6,13 +6,16 @@ package config
 
 import (
 	"flag"
+	"log"
 
 	env "github.com/Netflix/go-env"
 	"github.com/jinzhu/gorm"
 )
 
-//DB - Database connection
-var DB *gorm.DB
+var (
+	//DB - Database connection
+	DB *gorm.DB
+)
 
 // DBConfig represents db configuration
 type DBConfig struct {
@@ -39,6 +42,9 @@ type SystemConfig struct {
 	DevDBDatabase     string `env:"ENV_DEV_DB_DATABASE"`
 	DevDBSSL          string `env:"ENV_DEV_DB_SSL"`
 	AMQPConnectionURL string `env:"ENV_RABBITMQ_HOST"`
+	RabbitMQUser      string `env:"RABBITMQ_DEFAULT_USER"`
+	RabbitMQPass      string `env:"RABBITMQ_DEFAULT_PASS"`
+	RabbitMQVhost     string `env:"RABBITMQ_DEFAULT_VHOST"`
 	TwilioAccountSid  string `env:"ENV_TWILIO_ACCOUNT_SID"`
 	TwilioAuthToken   string `env:"ENV_TWILIO_AUTH_TOKEN"`
 	SenderPhone       string `env:"ENV_SENDER_PHONE"`
@@ -58,9 +64,26 @@ type SystemConfig struct {
 func GetConnectionContext() string {
 	dbContext := flag.Bool("isDev", false, "a bool")
 	if *dbContext {
-		return DevDbURL(BuildProdDBConfig())
+		return DevDbURL(BuildDevDBConfig())
 	}
-	return ProdDbURL(BuildDevDBConfig())
+	return ProdDbURL(BuildProdDBConfig())
+}
+
+//GetTestConnectionContext - returns database connection string for test to be run
+func GetTestConnectionContext() string {
+	return TestDbURL(BuildTestDBConfig())
+}
+
+//UseDBTestContext - opens connection to test db for tests to be run
+func UseDBTestContext() error {
+	var err error
+	DB, err = gorm.Open("postgres", GetTestConnectionContext())
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+	defer DB.Close()
+	return nil
 }
 
 //InitConfig - initial the configuration struct with environment variables

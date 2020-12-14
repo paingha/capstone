@@ -23,11 +23,11 @@ func handleError(err error, msg string) {
 
 func main() {
 	logrus.Info("Starting Upload Service...")
-	err := config.InitConfig(&cfg)
-	if err != nil {
+	if err := config.InitConfig(&cfg); err != nil {
 		logrus.Fatalf("load config %v", err)
 	}
-	conn, err := amqp.Dial(cfg.AMQPConnectionURL)
+	connectionString := "amqp://" + cfg.AMQPConnectionURL + ":5672" + cfg.RabbitMQVhost
+	conn, err := amqp.Dial(connectionString)
 	handleError(err, "Can't connect to AMQP")
 	defer conn.Close()
 	logrus.Infof("%v", cfg)

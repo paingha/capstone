@@ -1,0 +1,179 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    NAME: pushservice
+    kompose.cmd: C:\Program Files\kompose\kompose.exe convert -f docker-compose-prod.yml
+      -o deploy
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: push
+  name: push
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: push
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        NAME: pushservice
+        kompose.cmd: C:\Program Files\kompose\kompose.exe convert -f docker-compose-prod.yml
+          -o deploy
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: push
+    spec:
+      containers:
+      - env:
+        - name: ENV_BASE_URL
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_BASE_URL
+              name: env
+        - name: ENV_DEV_DB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_DEV_DB_DATABASE
+              name: env
+        - name: ENV_DEV_DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_DEV_DB_HOST
+              name: env
+        - name: ENV_DEV_DB_PASS
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_DEV_DB_PASS
+              name: env
+        - name: ENV_DEV_DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_DEV_DB_PORT
+              name: env
+        - name: ENV_DEV_DB_SSL
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_DEV_DB_SSL
+              name: env
+        - name: ENV_DEV_DB_USER
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_DEV_DB_USER
+              name: env
+        - name: ENV_ONE_SIGNAL_APP_ID
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_ONE_SIGNAL_APP_ID
+              name: env
+        - name: ENV_ONE_SIGNAL_APP_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_ONE_SIGNAL_APP_KEY
+              name: env
+        - name: ENV_PROD_DB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_PROD_DB_DATABASE
+              name: env
+        - name: ENV_PROD_DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_PROD_DB_HOST
+              name: env
+        - name: ENV_PROD_DB_PASS
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_PROD_DB_PASS
+              name: env
+        - name: ENV_PROD_DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_PROD_DB_PORT
+              name: env
+        - name: ENV_PROD_DB_SSL
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_PROD_DB_SSL
+              name: env
+        - name: ENV_PROD_DB_USER
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_PROD_DB_USER
+              name: env
+        - name: ENV_RABBITMQ_HOST
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_RABBITMQ_HOST
+              name: env
+        - name: ENV_SENDER_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_SENDER_EMAIL
+              name: env
+        - name: ENV_SENDER_PHONE
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_SENDER_PHONE
+              name: env
+        - name: ENV_SENDGRID_API_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_SENDGRID_API_KEY
+              name: env
+        - name: ENV_TWILIO_ACCOUNT_SID
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_TWILIO_ACCOUNT_SID
+              name: env
+        - name: ENV_TWILIO_AUTH_TOKEN
+          valueFrom:
+            configMapKeyRef:
+              key: ENV_TWILIO_AUTH_TOKEN
+              name: env
+        - name: GIN_MODE
+          valueFrom:
+            configMapKeyRef:
+              key: GIN_MODE
+              name: env
+        - name: JWT_SECRET
+          valueFrom:
+            configMapKeyRef:
+              key: JWT_SECRET
+              name: env
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            configMapKeyRef:
+              key: RABBITMQ_DEFAULT_PASS
+              name: env
+        - name: RABBITMQ_DEFAULT_USER
+          valueFrom:
+            configMapKeyRef:
+              key: RABBITMQ_DEFAULT_USER
+              name: env
+        - name: RABBITMQ_DEFAULT_VHOST
+          valueFrom:
+            configMapKeyRef:
+              key: RABBITMQ_DEFAULT_VHOST
+              name: env
+        - name: RABBITMQ_ERLANG_COOKIE
+          valueFrom:
+            configMapKeyRef:
+              key: RABBITMQ_ERLANG_COOKIE
+              name: env
+        - name: SERVER_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: SERVER_PORT
+              name: env
+        image: joeyjnr/irbpush:latest
+        imagePullPolicy: ""
+        name: push
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

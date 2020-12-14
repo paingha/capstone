@@ -5,16 +5,14 @@
 package routes
 
 import (
-	"bitbucket.com/irb/api/plugins"
 	"github.com/gin-gonic/gin"
 )
 
 //SetupRouter - setup routes for api
-func SetupRouter(inboxHub *plugins.Hub) *gin.Engine {
+func SetupRouter() *gin.Engine {
 	r := gin.Default()
 	{
 		RootRouter(r)
-		//WebsocketRouter(r, inboxHub)
 		UserRouter(r)
 		ConversationRouter(r)
 		MessageRouter(r)

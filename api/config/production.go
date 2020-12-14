@@ -8,6 +8,7 @@ import (
 	"fmt"
 
 	"bitbucket.com/irb/api/plugins"
+	"bitbucket.com/irb/api/utils"
 )
 
 //BuildProdDBConfig - Builds DB Config for production environment
@@ -17,9 +18,10 @@ func BuildProdDBConfig() *DBConfig {
 	if err != nil {
 		plugins.LogFatal("API", "Wrong Prod System config", err)
 	}
+	port, _ := utils.ConvertStringToInt(cfg.DevDBPort)
 	dbConfig := DBConfig{
 		Host:     cfg.ProdDBHost,
-		Port:     5432,
+		Port:     port,
 		User:     cfg.ProdDBUser,
 		DBName:   cfg.ProdDBDatabase,
 		Password: cfg.ProdDBPass,
