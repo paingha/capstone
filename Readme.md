@@ -8,6 +8,7 @@ This is a project entry for the overhaul of the NSU IRB which currently handles 
 
 ![](https://raw.githubusercontent.com/paingha/capstone/master/capstone-github-image.PNG?token=AB6SB22F5FXRNOWSR73EUGK72KRP2)
 
+
 ## Installation
 
 - Clone Github Repo into your Go Workspace: git clone https://github.com/paingha/capstone.git
@@ -24,7 +25,7 @@ The following are todo items for this project
 ##### - Setup React Webapp using create-react-app. - DONE
 ##### - Use email verification html files for verification emails. - DONE
 ##### - Add more tests
-##### - Setup CI/CD pipeline with Circle CI
+##### - Setup Kubernetes and Docker Compose files
 
 ## License
 [BSD License](https://opensource.org/licenses/BSD-3-Clause)
