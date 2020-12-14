@@ -1,11 +1,16 @@
+.env
 vendor
 start.cmd
 start_mail.cmd
 start_sms.cmd
 mailservice/main.exe
 smsservice/main.exe
-api/main.exe
+api/api.exe
 api/vendor
+deploy/env-configmap.yaml
+exportservice
+scripts
+webapp
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies

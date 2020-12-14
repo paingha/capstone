@@ -12,12 +12,15 @@ import (
 
 //Conversation - conversation data struct
 type Conversation struct {
-	ID           int          `json:"id,omitempty" sql:"primary_key"`
-	Participants Participants `gorm:"not null" json:"participants"`
-	Messages     []Messages   `gorm:"foreignkey:ConversationID" json:"messages"`
-	CreatedAt    time.Time    `json:"created_at"`
-	UpdatedAt    time.Time    `json:"updated_at"`
-	DeletedAt    *time.Time   `json:"deleted_at"`
+	ID                   int          `json:"id,omitempty" sql:"primary_key"`
+	ApplicationID        int          `json:"applicationId"`
+	ApplicationReference string       `json:"applicationReference"`
+	ApplicationTitle     string       `json:"applicationTitle"`
+	Participants         Participants `gorm:"not null" json:"participants"`
+	Messages             []Messages   `gorm:"foreignkey:ConversationID" json:"messages"`
+	CreatedAt            time.Time    `json:"created_at"`
+	UpdatedAt            time.Time    `json:"updated_at"`
+	DeletedAt            *time.Time   `json:"deleted_at"`
 }
 
 //Participants - participants data struct

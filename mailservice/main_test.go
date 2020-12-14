@@ -26,8 +26,7 @@ func TestSendMail(t *testing.T) {
 		Subject:   "test mail ",
 		BodyParam: emailBody,
 	}
-
-	cfg.SendgridAPIKey = ""
+	
 	cfg.SenderEmail = "info@paingha.tech"
 	sendEmail(emailParam)
 }

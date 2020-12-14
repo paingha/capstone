@@ -9,83 +9,121 @@ services:
     image: "rabbitmq:latest"
     hostname: "rabbit"
     environment:
-      RABBITMQ_ERLANG_COOKIE: "WouFRQQ1%MfMsJla4IBJic"
-      RABBITMQ_DEFAULT_USER: "rabbitmq"
-      RABBITMQ_DEFAULT_PASS: "rabbitmq"
-      RABBITMQ_DEFAULT_VHOST: "/"
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
     ports:
-      - "15672:15672"
       - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./rabbitmq/logs:/var/log/rabbitmq/log
     labels:
       NAME: "rabbitmq"
 
-  postgres:
-    image: postgres:11-alpine
-    environment:
-      PGUSER: postgres
-      POSTGRES_HOST_AUTH_METHOD: trust
-    volumes:
-      - db-volume:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-
   api:
-    image: api
+    image: joeyjnr/irbapi:latest
     build:
-      context: api
+      context: ./api
       args:
         service: api
     restart: on-failure
+    labels:
+      NAME: "api"
     ports:
-      - "8080:8080"
-    volumes:
-      - ./api/docs/openapi.yaml:/app/api/docs/openapi.yaml
+      - "80:8080"
+    env_file: .env
     environment:
-      SERVER_PORT: 8080
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_DATABASE: postgres
-      DB_SSL : disable
-      ENV_RABBITMQ_HOST : "amqp://rabbitmq:rabbitmq@rabbit/"
+      SERVER_PORT: ${SERVER_PORT}
+      ENV_PROD_DB_HOST: ${ENV_PROD_DB_HOST}
+      ENV_PROD_DB_PORT: ${ENV_PROD_DB_PORT}
+      ENV_PROD_DB_USER: ${ENV_PROD_DB_USER}
+      ENV_PROD_DB_PASS: ${ENV_PROD_DB_PASS}
+      ENV_PROD_DB_DATABASE: ${ENV_PROD_DB_DATABASE}
+      ENV_PROD_DB_SSL: ${ENV_PROD_DB_SSL}
+      ENV_DEV_DB_HOST: ${ENV_DEV_DB_HOST}
+      ENV_DEV_DB_PORT: ${ENV_DEV_DB_PORT}
+      ENV_DEV_DB_USER: ${ENV_DEV_DB_USER}
+      ENV_DEV_DB_PASS: ${ENV_DEV_DB_PASS}
+      ENV_DEV_DB_DATABASE: ${ENV_DEV_DB_DATABASE}
+      ENV_DEV_DB_SSL : ${ENV_DEV_DB_SSL}
+      ENV_RABBITMQ_HOST : ${ENV_RABBITMQ_HOST}
       DATABASE_DEBUG_MODE: "true"
-      ENV_BASE_URL : "https://paingha.tech"
+      ENV_BASE_URL : ${ENV_BASE_URL}
     depends_on:
-      - postgres
       - rabbit
 
   mailer:
-    image: mailer
+    image: joeyjnr/irbmailer:1.0
     build:
       context: api
       args:
         service: mailservice
     restart: on-failure
+    labels:
+      NAME: "mailservice"
+    env_file: .env
     environment:
-      ENV_RABBITMQ_HOST : "amqp://rabbitmq:rabbitmq@rabbit/"
-      ENV_SENDGRID_API_KEY : "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"
-      ENV_SENDER_EMAIL  : "info@paingha.tech"
-      ENV_BASE_URL : "https://paingha.tech"
+      ENV_RABBITMQ_HOST: ${ENV_RABBITMQ_HOST}
+      ENV_SENDGRID_API_KEY: ${ENV_SENDGRID_API_KEY}
+      ENV_SENDER_EMAIL: ${ENV_SENDER_EMAIL}
+      ENV_BASE_URL: ${ENV_BASE_URL}
     depends_on:
       - rabbit
 
   sms:
-    image: sms
+    image: joeyjnr/irbsms:latest
     build:
       context: api
       args:
         service: smsservice
     restart: on-failure
+    labels:
+      NAME: "smsservice"
+    env_file: .env
     environment:
-      ENV_RABBITMQ_HOST : "amqp://rabbitmq:rabbitmq@rabbit/"
-      ENV_SENDGRID_API_KEY : "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"
-      ENV_SENDER_EMAIL  : "info@paingha.tech"
-      ENV_BASE_URL : "https://paingha.tech"
+      ENV_RABBITMQ_HOST: ${ENV_RABBITMQ_HOST}
+      ENV_TWILIO_ACCOUNT_SID: ${ENV_TWILIO_ACCOUNT_SID}
+      ENV_TWILIO_AUTH_TOKEN: ${ENV_TWILIO_AUTH_TOKEN}
+      ENV_SENDER_PHONE: ${ENV_SENDER_PHONE}
+    depends_on:
+      - rabbit
+
+  push:
+    image: joeyjnr/irbpush:latest
+    build:
+      context: api
+      args:
+        service: pushservice
+    restart: on-failure
+    labels:
+      NAME: "pushservice"
+    env_file: .env
+    environment:
+      ENV_RABBITMQ_HOST: ${ENV_RABBITMQ_HOST}
+      ENV_ONE_SIGNAL_APP_KEY: ${ENV_ONE_SIGNAL_APP_KEY}
+      ENV_ONE_SIGNAL_APP_ID: ${ENV_ONE_SIGNAL_APP_ID}
+    depends_on:
+      - rabbit
+
+  upload:
+    image: joeyjnr/irbupload:latest
+    build:
+      context: api
+      args:
+        service: uploadservice
+    restart: on-failure
+    labels:
+      NAME: "uploadservice"
+    env_file: .env
+    environment:
+      ENV_RABBITMQ_HOST: ${ENV_RABBITMQ_HOST}
+      ENV_BASE_URL: ${ENV_BASE_URL}
+      ENV_AWS_S3_BUCKET: ${ENV_AWS_S3_BUCKET}
+      ENV_AWS_REGION: ${ENV_AWS_REGION}
+      ENV_AWS_ACCESS_KEY_ID: ${ENV_AWS_ACCESS_KEY_ID}
+      ENV_AWS_SECRET_KEY: ${ENV_AWS_SECRET_KEY}
+      ENV_AWS_SESSION_TOKEN: ENV_AWS_SESSION_TOKEN}
     depends_on:
       - rabbit
 
 
 volumes:
-  db-volume:
-  redis-volume:
+  postgres-data:

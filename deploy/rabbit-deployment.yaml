@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    NAME: rabbitmq
+    kompose.cmd: C:\Program Files\kompose\kompose.exe convert -f docker-compose-prod.yml
+      -o deploy
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: rabbit
+  name: rabbit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: rabbit
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        NAME: rabbitmq
+        kompose.cmd: C:\Program Files\kompose\kompose.exe convert -f docker-compose-prod.yml
+          -o deploy
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: rabbit
+    spec:
+      containers:
+      - env:
+        - name: RABBITMQ_DEFAULT_VHOST
+        image: rabbitmq:latest
+        imagePullPolicy: ""
+        name: rabbit
+        ports:
+        - containerPort: 5672
+        - containerPort: 15672
+        resources: {}
+      hostname: rabbit
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}
